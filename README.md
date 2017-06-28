@@ -1,5 +1,11 @@
 # walnoot
 
+Command line tool to get a quick look into your current crypto wallets.
+Integration with [Coinigy](https://www.coinigy.com/?r=6a5bc432).
+Plus you can add coins / number of coins manually via a simple `.env` file.
+
+[![walnoot-tabular.png](https://s12.postimg.org/thwcofbel/walnoot-tabular.png)](https://postimg.org/image/t54yi8t4p/)
+
 First version of usage:
 - clone this repo
 - `cd` into the repo folder ( probably `$ cd walnoot` )
