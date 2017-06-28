@@ -13,3 +13,4 @@ First version of usage:
 - run `$ yarn` or `$ npm install` to install dependencies
 - run `$ yarn start` to lint, build and run from the `lib` folder
 - if build succeeds you should see a nice tabular overview of your cryptowallet
+- once build you can use the include `wallet` shell script
