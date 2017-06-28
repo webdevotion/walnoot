@@ -1,0 +1,32 @@
+{
+  "name": "coinmarketcapper",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "yarn run lint && yarn run build && node lib/index.js",
+    "build": "babel src -d lib",
+    "lint": "eslint src/*.js"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "dotenv": "^4.0.0",
+    "easy-table": "^1.1.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.1",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "eslint": "^4.1.1",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-babel": "^4.1.1",
+    "eslint-plugin-import": "^2.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "lint"
+  ]
+}
