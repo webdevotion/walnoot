@@ -1,8 +1,8 @@
 import Printer from './printer';
+import Gyppo from './gyppo';
 
 const colors = require('colors/safe');
 const Table = require('easy-table');
-const Logger = require('./logger');
 const _ = require('underscore');
 
 class Wallet {
@@ -16,10 +16,10 @@ class Wallet {
 
   async parse(balances) {
     try {
-      await Promise.all(balances.map(coin => this.addCoin(coin)));
+      await Promise.all(balances.map(coin => this.addCoin(coin)).filter(c => c));
       return true;
     } catch (e) {
-      Logger.log(e);
+      Gyppo.log(e);
     }
     return false;
   }
@@ -29,17 +29,26 @@ class Wallet {
   }
 
   addCoin(coin) {
+    if (coin == null) {
+      return false;
+    }
+
+    if (coin === undefined) {
+      return false;
+    }
     this.results.push(coin);
+    return true;
   }
 
-  tableify() {
+  async tableify() {
     if (this.table == null) {
       this.table = new Table();
     }
 
     const EUR_BTC = this.bitcoin.last_eur;
     let btcTotal = 0;
-    _.sortBy(this.results, c => -1 * c.balance_amount_total).forEach((coin, i) => {
+    const sorter = c => -1 * c.balance_amount_total;
+    _.sortBy(this.results, sorter).forEach((coin, i) => {
       const f = i % 2 ? colors.green : colors.white;
       this.table.cell('Symbol', f(coin.balance_curr_code));
       const numberOfCoins = (coin.balance_amount_total * 1).toFixed(4);
