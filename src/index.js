@@ -1,10 +1,11 @@
 import Coinigy from './coinigy';
 import Wallet from './wallet';
 import Extras from './extras';
+import Gyppo from './gyppo';
 
 require('dotenv').config();
 
-const Logger = require('./logger');
+const logger = new Gyppo();
 
 async function coinigy() {
   const c = new Coinigy(process.env.COINIGY_KEY, process.env.COINIGY_SECRET);
@@ -12,7 +13,7 @@ async function coinigy() {
   try {
     balances = await c.balances();
   } catch (e) {
-    Logger.log('failed to get coinigy balance');
+    logger.log('failed to get coinigy balance');
     throw e;
   }
   return balances;
@@ -37,17 +38,19 @@ async function lambotime(balances) {
   try {
     const parsed = await wallet.parse(balances);
     if (!parsed) {
-      Logger.log('failed to parse balance');
+      logger.log('failed to parse balance');
       return null;
     }
   } catch (e) {
-    Logger.log('throwing an error');
-    throw e;
+    logger.log('throwing an error');
+    return null;
   }
   return wallet;
 }
 
+let lastResult;
 async function start() {
+  logger.log('reloading ...');
   let balances = [];
 
   const extraBalance = await extras();
@@ -59,7 +62,7 @@ async function start() {
 
   const wallet = await lambotime(balances);
   if (!wallet) {
-    Logger.log('no wallet with balances found, something went wrong');
+    logger.log('no wallet with balances found, something went wrong');
     return;
   }
 
@@ -67,7 +70,16 @@ async function start() {
     wallet.bitcoin = btc;
   }
 
-  Logger.log(wallet.tableify());
+  wallet.tableify().then((table) => {
+    lastResult = table.toString();
+    logger.log(lastResult);
+    return btc;
+  }).catch((error) => {
+    logger.log(error.message);
+  });
+
+  logger.clear();
+  setTimeout(start, 60000);
 }
 
 start();
