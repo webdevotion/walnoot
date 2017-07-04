@@ -36,6 +36,7 @@ class Wallet {
     if (coin === undefined) {
       return false;
     }
+
     this.results.push(coin);
     return true;
   }
@@ -48,7 +49,11 @@ class Wallet {
     const EUR_BTC = this.bitcoin.last_eur;
     let btcTotal = 0;
     const sorter = c => -1 * c.balance_amount_total;
-    _.sortBy(this.results, sorter).forEach((coin, i) => {
+    const filter = c => (c.btc_balance * 1 * EUR_BTC) > 0.01;
+
+    let tableCoins = _.filter(this.results, filter);
+    tableCoins = _.sortBy(tableCoins, sorter);
+    tableCoins.forEach((coin, i) => {
       const f = i % 2 ? colors.green : colors.white;
       this.table.cell('Symbol', f(coin.balance_curr_code));
       const numberOfCoins = (coin.balance_amount_total * 1).toFixed(4);
@@ -56,8 +61,8 @@ class Wallet {
       btcTotal += valueInBTC;
       this.table.cell('Tokens', f(Table.padLeft(numberOfCoins, 14)));
       this.table.cell('BTC Price', f(Table.padLeft(Printer.btc(coin.last_price * 1, 14), 20)));
-      this.table.cell('BTC Value', f(Table.padLeft(Printer.btc(valueInBTC * 1, 14), 20)));
-      this.table.cell('EUR Value', f(Table.padLeft(Printer.eur(valueInBTC * 1 * EUR_BTC, 2), 20)));
+      this.table.cell('BTC Value', f(Table.padLeft(Printer.btc(valueInBTC, 14), 20)));
+      this.table.cell('EUR Value', f(Table.padLeft(Printer.eur(valueInBTC * EUR_BTC, 2), 20)));
       this.table.newRow();
     });
 
