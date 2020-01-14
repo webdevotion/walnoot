@@ -20,6 +20,13 @@ async function coinigy() {
 }
 
 async function extras() {
+  if (typeof process.env.EXTRAS === 'undefined') {
+    logger.log('make sure your .env file is in place and valid');
+    return null;
+  }
+  logger.log('==========');
+  logger.log(process.env.EXTRAS);
+  logger.log('==========');
   const extrasEnv = process.env.EXTRAS.split(',');
   const coins = [];
   for (let i = 0; i < extrasEnv.length; i += 1) {
@@ -36,6 +43,7 @@ async function extras() {
 async function lambotime(balances) {
   const wallet = new Wallet();
   try {
+    logger.log(balances);
     const parsed = await wallet.parse(balances);
     if (!parsed) {
       logger.log('failed to parse balance');
@@ -54,6 +62,14 @@ async function start() {
   let balances = [];
 
   const extraBalance = await extras();
+  logger.log(typeof extraBalance);
+  logger.log(JSON.stringify(extraBalance));
+  if (extraBalance == null) {
+    logger.log('no balances were found, is your .env in place?');
+    return;
+  }
+
+
   const btc = extraBalance.find(xtr => xtr.balance_curr_code === 'BTC');
   balances = balances.concat(extraBalance);
 
