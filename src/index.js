@@ -70,7 +70,7 @@ async function start() {
   }
 
 
-  const btc = extraBalance.find(xtr => xtr.balance_curr_code === 'BTC');
+  const btc = extraBalance.find((xtr) => xtr.balance_curr_code === 'BTC');
   balances = balances.concat(extraBalance);
 
   const coinigyBalance = await coinigy();

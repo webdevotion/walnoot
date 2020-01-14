@@ -19,7 +19,7 @@ class Coinigy {
         'X-API-SECRET': this.secret,
       },
       body: '{  "show_nils": 0,  "auth_ids": ""}',
-    }).then(result => JSON.parse(result).data)
+    }).then((result) => JSON.parse(result).data)
       .catch((error) => {
         switch (error.name) {
           case 'StatusCodeError':

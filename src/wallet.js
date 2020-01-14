@@ -16,7 +16,7 @@ class Wallet {
 
   async parse(balances) {
     try {
-      await Promise.all(balances.map(coin => this.addCoin(coin)).filter(c => c));
+      await Promise.all(balances.map((coin) => this.addCoin(coin)).filter((c) => c));
       return true;
     } catch (e) {
       Gyppo.log(e);
@@ -48,8 +48,8 @@ class Wallet {
 
     const EUR_BTC = this.bitcoin.last_eur;
     let btcTotal = 0;
-    const sorter = c => -1 * c.balance_amount_total;
-    const filter = c => (c.btc_balance * 1 * EUR_BTC) > 0.01;
+    const sorter = (c) => -1 * c.balance_amount_total;
+    const filter = (c) => (c.btc_balance * 1 * EUR_BTC) > 0.01;
 
     let tableCoins = _.filter(this.results, filter);
     tableCoins = _.sortBy(tableCoins, sorter);
