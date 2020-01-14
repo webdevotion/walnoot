@@ -6,7 +6,8 @@
   "scripts": {
     "start": "yarn run lint && yarn run build && node lib/index.js",
     "build": "babel src -d lib",
-    "lint": "eslint src/*.js"
+    "lint": "eslint src/*.js",
+    "test": "echo 'no test defined'"
   },
   "dependencies": {
     "@babel/core": "^7.8.3",
